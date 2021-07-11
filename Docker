@@ -1,0 +1,20 @@
+FROM alpine:3.14
+
+ENV TZ=Australia/Melbourne
+ENV API_USER=x
+ENV API_PASS=y
+ENV DDNS_DOMAIN=updateme.com
+ENV DDNS_SUBDOMAIN=dynamic
+
+# Set timezone
+RUN echo ${TZ} > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
+
+
+# Install dependencies, download and extract the hover ddns updater 
+RUN apt-get update && \
+     npm i -g hover-ddns-updater
+
+ADD run.sh /run.sh
+
+CMD ./run.sh
